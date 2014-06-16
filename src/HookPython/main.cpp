@@ -197,14 +197,14 @@ static PyObject* CallOriginalFunction(PyObject* self, PyObject* args)
 	index = WriteByte(function, index, 0xFF); //call eax
 	index = WriteByte(function, index, 0xD0);
 
-	WriteRelativeByteOffset(function, jumpIndex, (int)(function + index));
-
 	if (strcmp(declspec, "cdecl") == 0)
 	{
 		index = WriteByte(function, index, 0x83); //add esp, 4 * parameters
 		index = WriteByte(function, index, 0xC4);
 		index = WriteByte(function, index, 4 * parameters);
 	}
+
+	WriteRelativeByteOffset(function, jumpIndex, (int)(function + index));
 
 	index = WriteByte(function, index, 0xC3); //return
 
@@ -369,9 +369,9 @@ extern "C" _declspec(dllexport) void* PythonHook(const char* functionName, const
 	index = WriteByte(function, index, 0xE8); //call CallPythonFunction
 	index = WriteRelativeAddress(function, index, (int)&CallPythonFunction);
 
-	index = WriteByte(function, index, 0x83); //add esp, 16  + 4 * parameters
+	index = WriteByte(function, index, 0x83); //add esp, 20  + 4 * parameters
 	index = WriteByte(function, index, 0xC4);
-	index = WriteByte(function, index, 16 + 4 * (strcmp(declSpec, "thiscall") == 0 ? parameters + 1 : parameters));
+	index = WriteByte(function, index, 20 + 4 * (strcmp(declSpec, "thiscall") == 0 ? parameters + 1 : parameters));
 
 	index = WriteByte(function, index, 0x5D); //pop ebp
 
