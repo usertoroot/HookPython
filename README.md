@@ -47,7 +47,7 @@ The **HookPython** program consists out of a DLL which should be invoked using [
 Example
 -------
 
-The following command will hook a function in the program **InterceptMe.exe** at the relative virtual address **0x11177**. This relative virtual address indicates the address of the **RC4** cryptography function. The next parameter is the full path to the DLL containing the proxy function. The next parameter is the name of the function we want to invoke in **HookPython.DLL**. Therefore this parameter will always be **PythonHook**. The next parameter contains the name of the python function to invoke. In this case the name is **ProxyRC4**. The last two parameters indicate the declaration specification (cdecl, stdcall, thiscall) and the amount of parameters. The python script is expected to be named **Hooks.py** and it should be located in the working directory of the executable you want to inject in.
+The following command will hook a function in the program **InterceptMe.exe** at the relative virtual address **0x11177**. This relative virtual address indicates the address of the **RC4** cryptography function. The next parameter is the full path to the DLL containing the proxy function. The next parameter is the name of the function we want to invoke in **HookPython.DLL**. Therefore this parameter will always be **PythonHook**. The next parameter contains the name of the python function to invoke. In this case the name is **ProxyRC4**. The last two parameters indicate the declaration specification (cdecl, stdcall, thiscall) and the amount of parameters. The python script is expected to be named **Hooks.py** and it should be located in the working directory of the executable you want to inject in. The full command is shown below:
 
 ```
 HookFunction InterceptMe.exe 0x11177 "D:\Projects\Werk\HookPython\bin\x86\HookPython.DLL" PythonHook ProxyRC4 cdecl 5
@@ -64,11 +64,11 @@ def ProxyRC4(input, inputLength, key, keyLength, output):
     HookPython.CallOriginalFunction(input, inputLength, key, keyLength, output)
 ```
 
-Every time the **RC4** function in the program will be invoked our program will intercept the code flow. This allows us to do tampering before encryption and after decryption. When invoking the command this way python will assume all parameters to be integers. There is an additional parameter which will allow us to specify the types allowing for easier tampering.
+Every time the **RC4** function in the program will be invoked our program will intercept the code flow. This allows us to do tampering before encryption and after decryption. When invoking the command this way python will assume all parameters to be integers. There is an additional parameter which will allow us to specify the types allowing for easier tampering. The full command is shown below:
 
 
 ```
-HookFunction InterceptMe.exe 0x11177 "X:\...\HookPython.DLL" PythonHook ProxyRC4 cdecl 5 **sisii**
+HookFunction InterceptMe.exe 0x11177 "X:\...\HookPython.DLL" PythonHook ProxyRC4 cdecl 5 sisii
 ```
 
 An example proxy python script is shown below:
@@ -83,11 +83,19 @@ def ProxyRC4(input, inputLength, key, keyLength, output):
     HookPython.CallOriginalFunction("GAAPEN", 6, key, keyLength, output)
 ```
 
-Note that the variables shown in bold below are constants.
-
-```
-HookFunction InterceptMe.exe 0x11177 **"D:\Projects\Werk\HookPython\bin\x86\HookPython.DLL"** **PythonHook** ProxyRC4 cdecl 5 sisii
-```
+The types for the format string `sisii` are as follows:
+- b - char
+- B - unsigned char
+- h - short int
+- H - unsigned short int
+- i - int
+- I - unsigned int
+- l - long
+- k - unsigned long
+- f - float
+- s - UTF-8 string
+- u - unicode string
+- y - bytes
 
 Additional Notes
 ----------------
