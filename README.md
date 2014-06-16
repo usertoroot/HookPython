@@ -21,7 +21,7 @@ running the editor yourself on Windows other platforms will be implemented at a 
 
 3. Okay, platform stuff comes next.  Depending on whether you are on Windows or another platform, follow one of the sections below.
 
-4. This dll depends on [HookFunction](https://git.koenj.com/koenj/hookfunction). Please also follow the instructions to compile [HookFunction](https://git.koenj.com/koenj/hookfunction).
+4. This DLL depends on [HookFunction](https://git.koenj.com/koenj/hookfunction). Please also follow the instructions to compile [HookFunction](https://git.koenj.com/koenj/hookfunction).
 
 ## Windows
 
@@ -42,15 +42,15 @@ Currently not supported.
 Usage
 -----
 
-The **HookPython** program consists out of a dll which should be invoked using [HookFunction](https://git.koenj.com/koenj/hookfunction). The executable will inject the dll into the remote process and invoke the python functions. **HookPython** is made to hook arbitrary functions using simple python scripts and it allows for easy proxy function injection. Currently the hooking of any **cdecl**, **thiscall** and **stdcall** function is supported.
+The **HookPython** program consists out of a DLL which should be invoked using [HookFunction](https://git.koenj.com/koenj/hookfunction). The executable will inject the DLL into the remote process and invoke the python functions. **HookPython** is made to hook arbitrary functions using simple python scripts and it allows for easy proxy function injection. Currently the hooking of any **cdecl**, **thiscall** and **stdcall** function is supported.
 
 Example
 -------
 
-The following command will hook a function in the program **InterceptMe.exe** at the relative virtual address **0x11177**. This relative virtual address indicates the address of the **RC4** cryptography function. The next parameter is the full path to the dll containing the proxy function. The next parameter is the name of the function we want to invoke in **HookPython.dll**. Therefore this parameter will always be **PythonHook**. The next parameter contains the name of the python function to invoke. In this case the name is **ProxyRC4**. The last two parameters indicate the declaration specification (cdecl, stdcall, thiscall) and the amount of parameters. The python script is expected to be named **Hooks.py** and it should be located in the working directory of the executable you want to inject in.
+The following command will hook a function in the program **InterceptMe.exe** at the relative virtual address **0x11177**. This relative virtual address indicates the address of the **RC4** cryptography function. The next parameter is the full path to the DLL containing the proxy function. The next parameter is the name of the function we want to invoke in **HookPython.DLL**. Therefore this parameter will always be **PythonHook**. The next parameter contains the name of the python function to invoke. In this case the name is **ProxyRC4**. The last two parameters indicate the declaration specification (cdecl, stdcall, thiscall) and the amount of parameters. The python script is expected to be named **Hooks.py** and it should be located in the working directory of the executable you want to inject in.
 
 ```
-HookFunction InterceptMe.exe 0x11177 "D:\Projects\Werk\HookPython\bin\x86\HookPython.dll" PythonHook ProxyRC4 cdecl 5
+HookFunction InterceptMe.exe 0x11177 "D:\Projects\Werk\HookPython\bin\x86\HookPython.DLL" PythonHook ProxyRC4 cdecl 5
 ```
 
 An example proxy python script is shown below:
@@ -68,7 +68,7 @@ Every time the **RC4** function in the program will be invoked our program will 
 
 
 ```
-HookFunction InterceptMe.exe 0x11177 "D:\Projects\Werk\HookPython\bin\x86\HookPython.dll" PythonHook ProxyRC4 cdecl 5 **sisii**
+HookFunction InterceptMe.exe 0x11177 "D:\Projects\Werk\HookPython\bin\x86\HookPython.DLL" PythonHook ProxyRC4 cdecl 5 **sisii**
 ```
 
 An example proxy python script is shown below:
