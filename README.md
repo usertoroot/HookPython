@@ -97,6 +97,22 @@ The types for the format string `sisii` are as follows:
 - u - unicode string
 - y - bytes
 
+Added python functions
+----------------------
+
+The following python functions have been added:
+
+
+|     Function name    |           Parameters           |                Description              |                Return Value              |
+| -------------------- | ------------------------------ | --------------------------------------- | ---------------------------------------- |
+| WriteMemoryInteger   | integer address, integer value | Write an integer to a memory location.  | Returns 1 on success.                    |
+| ReadMemoryInteger    | integer address                | Read an integer from a memory location. | Return value on success.                 |
+| WriteMemoryByte      | integer address, byte value    | Write an byte to a memory location.     | Returns 1 on success.                    |
+| ReadMemoryByte       | integer address                | Read an byte from a memory location.    | Return value on success.                 |
+| WriteMemoryString    | integer address, string value  | Write a string to a memory location.    | Returns 1 on success.                    |
+| ReadMemoryString     | integer address                | Read a string from a memory location.   | Return value on success.                 |
+| CallOriginalFunction | original parameters (variable) | Call the original function.             | Return result of call on success else 0. |
+
 Additional Notes
 ----------------
 
