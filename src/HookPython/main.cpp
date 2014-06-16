@@ -157,7 +157,7 @@ static PyObject* CallOriginalFunction(PyObject* self, PyObject* args)
 	int jumpIndex = index;
 	index = WriteByte(function, index, 0x00);
 
-	for (int i = parameters - 1; i >= strcmp(declspec, "thiscall") == 0 ? 1 : 0; i--)
+	for (int i = parameters - 1; i >= (strcmp(declspec, "thiscall") == 0 ? 1 : 0); i--)
 	{
 		index = WriteByte(function, index, 0x68); //push parameter[i]
 
