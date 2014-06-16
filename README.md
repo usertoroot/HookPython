@@ -68,7 +68,7 @@ Every time the **RC4** function in the program will be invoked our program will 
 
 
 ```
-HookFunction InterceptMe.exe 0x11177 "D:\Projects\Werk\HookPython\bin\x86\HookPython.DLL" PythonHook ProxyRC4 cdecl 5 **sisii**
+HookFunction InterceptMe.exe 0x11177 "X:\...\HookPython.DLL" PythonHook ProxyRC4 cdecl 5 **sisii**
 ```
 
 An example proxy python script is shown below:
@@ -83,10 +83,15 @@ def ProxyRC4(input, inputLength, key, keyLength, output):
     HookPython.CallOriginalFunction("GAAPEN", 6, key, keyLength, output)
 ```
 
+Note that the variables shown in bold below are constants.
+
+```
+HookFunction InterceptMe.exe 0x11177 **"D:\Projects\Werk\HookPython\bin\x86\HookPython.DLL"** **PythonHook** ProxyRC4 cdecl 5 sisii
+```
+
 Additional Notes
 ----------------
 
 Visual Studio 2013 is strongly recommended for compiling.
 
 The first time you start the editor from a fresh source build, you may experience long load times.  This only happens on the first run.
-
