@@ -157,7 +157,7 @@ static PyObject* CallOriginalFunction(PyObject* self, PyObject* args)
 	int jumpIndex = index;
 	index = WriteByte(function, index, 0x00);
 
-	for (int i = parameters - 1; i >= 0; i--)
+	for (int i = parameters - 1; i >= strcmp(declspec, "thiscall") == 0 ? 1 : 0; i--)
 	{
 		index = WriteByte(function, index, 0x68); //push parameter[i]
 
@@ -185,6 +185,43 @@ static PyObject* CallOriginalFunction(PyObject* self, PyObject* args)
 			break;
 		case 'y': //bytes
 			index = WriteInt(function, index, (int)PyBytes_AsString(PyTuple_GetItem(args, i)));
+			break;
+		default:
+		case 'L': //long long
+		case 'K': //unsigned long long
+		case 'd': //double
+			return Py_BuildValue("i", 0);
+		}
+	}
+
+	if (strcmp(declspec, "thiscall") == 0)
+	{
+		index = WriteByte(function, index, 0xB9); //mov ecx, value
+
+		switch (format[0])
+		{
+		case 'b': //unsigned char
+		case 'B': //unsigned char
+		case 'h': //short int
+		case 'H': //unsigned short int
+		case 'i': //int
+		case 'I': //unsigned int
+		case 'l': //long
+		case 'k': //unsigned long
+			index = WriteInt(function, index, _PyLong_AsInt(PyTuple_GetItem(args, 0)));
+			break;
+		case 'f': //float
+		{
+					  float f = PyFloat_AsDouble(PyTuple_GetItem(args, 0));
+					  index = WriteInt(function, index, *(int*)&f);
+					  break;
+		}
+		case 's': //UTF-8 string
+		case 'u': //unicode string
+			index = WriteInt(function, index, (int)PyUnicode_AsUTF8(PyTuple_GetItem(args, 0)));
+			break;
+		case 'y': //bytes
+			index = WriteInt(function, index, (int)PyBytes_AsString(PyTuple_GetItem(args, 0)));
 			break;
 		default:
 		case 'L': //long long
